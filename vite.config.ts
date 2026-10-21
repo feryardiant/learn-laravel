@@ -21,6 +21,8 @@ export default defineConfig({
         htmlWhitespaceSensitivity: 'css',
         ignorePatterns: [
             'composer.json',
+            'AGENTS.md',
+            '.agents/**/*.md',
             'resources/js/components/ui/*',
             'resources/views/mail/*',
             'tests/coverage/**',
