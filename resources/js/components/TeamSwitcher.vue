@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { router, usePage } from '@inertiajs/vue3';
-import { Check, ChevronsUpDown, Plus, Users } from '@lucide/vue';
-import { computed, onMounted, onUnmounted, ref } from 'vue';
-import CreateTeamModal from '@/components/CreateTeamModal.vue';
-import { Button } from '@/components/ui/button';
+import { router, usePage } from '@inertiajs/vue3'
+import { Check, ChevronsUpDown, Plus, Users } from '@lucide/vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+
+import CreateTeamModal from '@/components/CreateTeamModal.vue'
+import { Button } from '@/components/ui/button'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,79 +12,73 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { switchMethod } from '@/routes/teams';
-import type { Team } from '@/types';
+} from '@/components/ui/dropdown-menu'
+import { switchMethod } from '@/routes/teams'
+import type { Team } from '@/types'
 
 const props = withDefaults(
     defineProps<{
-        inHeader?: boolean;
+        inHeader?: boolean
     }>(),
     {
         inHeader: false,
     },
-);
+)
 
-const page = usePage();
-const isMobile = ref(false);
-let mediaQuery: MediaQueryList | null = null;
+const page = usePage()
+const isMobile = ref(false)
+let mediaQuery: MediaQueryList | null = null
 const updateIsMobile = () => {
     if (mediaQuery) {
-        isMobile.value = mediaQuery.matches;
+        isMobile.value = mediaQuery.matches
     }
-};
+}
 
-const currentTeam = computed(() => page.props.currentTeam);
-const teams = computed(() => page.props.teams ?? []);
+const currentTeam = computed(() => page.props.currentTeam)
+const teams = computed(() => page.props.teams ?? [])
 const menuContentClass = computed(() =>
-    props.inHeader
-        ? 'w-56'
-        : 'w-(--reka-dropdown-menu-trigger-width) min-w-56 rounded-lg',
-);
-const teamItemClass = computed(() =>
-    props.inHeader ? 'cursor-pointer gap-2' : 'cursor-pointer gap-2 p-2',
-);
-const checkIconClass = computed(() =>
-    props.inHeader ? 'ml-auto size-4' : 'ml-auto h-4 w-4',
-);
-const plusIconClass = computed(() => (props.inHeader ? 'size-4' : 'h-4 w-4'));
+    props.inHeader ? 'w-56' : 'w-(--reka-dropdown-menu-trigger-width) min-w-56 rounded-lg',
+)
+const teamItemClass = computed(() => (props.inHeader ? 'cursor-pointer gap-2' : 'cursor-pointer gap-2 p-2'))
+const checkIconClass = computed(() => (props.inHeader ? 'ml-auto size-4' : 'ml-auto h-4 w-4'))
+const plusIconClass = computed(() => (props.inHeader ? 'size-4' : 'h-4 w-4'))
 
 const switchTeam = (team: Team) => {
-    const previousTeamSlug = currentTeam.value?.slug;
+    const previousTeamSlug = currentTeam.value?.slug
 
     router.visit(switchMethod(team.slug), {
         onFinish: () => {
             if (!previousTeamSlug || typeof window === 'undefined') {
-                router.reload();
+                router.reload()
 
-                return;
+                return
             }
 
-            const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-            const segment = `/${previousTeamSlug}`;
+            const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`
+            const segment = `/${previousTeamSlug}`
 
             if (currentUrl.includes(segment)) {
                 router.visit(currentUrl.replace(segment, `/${team.slug}`), {
                     replace: true,
-                });
+                })
 
-                return;
+                return
             }
 
-            router.reload();
+            router.reload()
         },
-    });
-};
+    })
+}
 
 onMounted(() => {
-    mediaQuery = window.matchMedia('(max-width: 767px)');
-    updateIsMobile();
-    mediaQuery.addEventListener('change', updateIsMobile);
-});
+    mediaQuery = window.matchMedia('(max-width: 767px)')
+    updateIsMobile()
+    mediaQuery.addEventListener('change', updateIsMobile)
+})
 
 onUnmounted(() => {
-    mediaQuery?.removeEventListener('change', updateIsMobile);
-});
+    mediaQuery?.removeEventListener('change', updateIsMobile)
+})
 </script>
 
 <template>
@@ -99,11 +94,7 @@ onUnmounted(() => {
                 "
             >
                 <Users
-                    :class="
-                        props.inHeader
-                            ? 'hidden'
-                            : 'hidden size-4 shrink-0 group-data-[collapsible=icon]:block'
-                    "
+                    :class="props.inHeader ? 'hidden' : 'hidden size-4 shrink-0 group-data-[collapsible=icon]:block'"
                 />
                 <div
                     :class="
@@ -112,22 +103,12 @@ onUnmounted(() => {
                             : 'grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden'
                     "
                 >
-                    <span
-                        :class="
-                            props.inHeader
-                                ? 'max-w-[120px] truncate font-medium'
-                                : 'truncate font-semibold'
-                        "
-                    >
+                    <span :class="props.inHeader ? 'max-w-[120px] truncate font-medium' : 'truncate font-semibold'">
                         {{ currentTeam?.name ?? 'Select team' }}
                     </span>
                 </div>
                 <ChevronsUpDown
-                    :class="
-                        props.inHeader
-                            ? 'size-4 opacity-50'
-                            : 'ml-auto group-data-[collapsible=icon]:hidden'
-                    "
+                    :class="props.inHeader ? 'size-4 opacity-50' : 'ml-auto group-data-[collapsible=icon]:hidden'"
                 />
             </Button>
         </DropdownMenuTrigger>
@@ -138,9 +119,7 @@ onUnmounted(() => {
             :align="props.inHeader ? 'end' : 'start'"
             :side-offset="props.inHeader ? undefined : 4"
         >
-            <DropdownMenuLabel class="text-xs text-muted-foreground">
-                Teams
-            </DropdownMenuLabel>
+            <DropdownMenuLabel class="text-xs text-muted-foreground"> Teams </DropdownMenuLabel>
             <DropdownMenuItem
                 v-for="team in teams"
                 :key="team.id"
@@ -149,18 +128,11 @@ onUnmounted(() => {
                 @click="switchTeam(team)"
             >
                 {{ team.name }}
-                <Check
-                    v-if="currentTeam?.id === team.id"
-                    :class="checkIconClass"
-                />
+                <Check v-if="currentTeam?.id === team.id" :class="checkIconClass" />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <CreateTeamModal>
-                <DropdownMenuItem
-                    data-test="team-switcher-new-team"
-                    :class="teamItemClass"
-                    @select.prevent
-                >
+                <DropdownMenuItem data-test="team-switcher-new-team" :class="teamItemClass" @select.prevent>
                     <Plus :class="plusIconClass" />
                     <span class="text-muted-foreground">New team</span>
                 </DropdownMenuItem>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { KeyRound, Trash2 } from '@lucide/vue';
-import { ref } from 'vue';
-import { Button } from '@/components/ui/button';
+import { KeyRound, Trash2 } from '@lucide/vue'
+import { ref } from 'vue'
+
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -10,33 +11,31 @@ import {
     DialogFooter,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog';
-import type { Passkey } from '@/types/auth';
+} from '@/components/ui/dialog'
+import type { Passkey } from '@/types/auth'
 
 const props = defineProps<{
-    passkey: Passkey;
-}>();
+    passkey: Passkey
+}>()
 
 const emit = defineEmits<{
-    remove: [id: number, onError: () => void];
-}>();
+    remove: [id: number, onError: () => void]
+}>()
 
-const isDeleting = ref(false);
+const isDeleting = ref(false)
 
 const handleDelete = () => {
-    isDeleting.value = true;
+    isDeleting.value = true
     emit('remove', props.passkey.id, () => {
-        isDeleting.value = false;
-    });
-};
+        isDeleting.value = false
+    })
+}
 </script>
 
 <template>
     <div class="flex items-center justify-between border-b p-4 last:border-b-0">
         <div class="flex items-center gap-4">
-            <div
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted"
-            >
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
                 <KeyRound class="h-5 w-5 text-muted-foreground" />
             </div>
             <div class="space-y-1">
@@ -74,18 +73,14 @@ const handleDelete = () => {
             <DialogContent>
                 <DialogTitle>Remove passkey</DialogTitle>
                 <DialogDescription>
-                    Are you sure you want to remove the "{{ passkey.name }}"
-                    passkey? You will no longer be able to use it to sign in.
+                    Are you sure you want to remove the "{{ passkey.name }}" passkey? You will no longer be able to use
+                    it to sign in.
                 </DialogDescription>
                 <DialogFooter class="gap-2">
                     <DialogClose as-child>
                         <Button variant="secondary">Cancel</Button>
                     </DialogClose>
-                    <Button
-                        variant="destructive"
-                        :disabled="isDeleting"
-                        @click="handleDelete"
-                    >
+                    <Button variant="destructive" :disabled="isDeleting" @click="handleDelete">
                         {{ isDeleting ? 'Removing...' : 'Remove passkey' }}
                     </Button>
                 </DialogFooter>

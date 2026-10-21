@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -10,34 +11,34 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog';
-import { destroy as destroyMember } from '@/routes/teams/members';
-import type { Team, TeamMember } from '@/types';
+} from '@/components/ui/dialog'
+import { destroy as destroyMember } from '@/routes/teams/members'
+import type { Team, TeamMember } from '@/types'
 
 type Props = {
-    team: Team;
-    member: TeamMember | null;
-    open: boolean;
-};
+    team: Team
+    member: TeamMember | null
+    open: boolean
+}
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-    'update:open': [value: boolean];
-}>();
+    'update:open': [value: boolean]
+}>()
 
-const processing = ref(false);
+const processing = ref(false)
 
 const removeMember = () => {
     if (!props.member) {
-        return;
+        return
     }
 
     router.visit(destroyMember([props.team.slug, props.member.id]), {
         onStart: () => (processing.value = true),
         onFinish: () => (processing.value = false),
         onSuccess: () => emit('update:open', false),
-    });
-};
+    })
+}
 </script>
 
 <template>

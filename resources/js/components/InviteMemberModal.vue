@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Form } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import InputError from '@/components/InputError.vue';
-import { Button } from '@/components/ui/button';
+import { Form } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import InputError from '@/components/InputError.vue'
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -11,39 +12,33 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { store as storeInvitation } from '@/routes/teams/invitations';
-import type { RoleOption, Team } from '@/types';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { store as storeInvitation } from '@/routes/teams/invitations'
+import type { RoleOption, Team } from '@/types'
 
 type Props = {
-    team: Team;
-    availableRoles: RoleOption[];
-    open: boolean;
-};
+    team: Team
+    availableRoles: RoleOption[]
+    open: boolean
+}
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-    'update:open': [value: boolean];
-}>();
+    'update:open': [value: boolean]
+}>()
 
-const inviteRole = ref('member');
-const formKey = ref(0);
+const inviteRole = ref('member')
+const formKey = ref(0)
 
 function handleOpenChange(value: boolean) {
-    emit('update:open', value);
+    emit('update:open', value)
 
     if (!value) {
-        inviteRole.value = 'member';
-        formKey.value++;
+        inviteRole.value = 'member'
+        formKey.value++
     }
 }
 </script>
@@ -60,9 +55,7 @@ function handleOpenChange(value: boolean) {
             >
                 <DialogHeader>
                     <DialogTitle>Invite a team member</DialogTitle>
-                    <DialogDescription>
-                        Send an invitation to join this team.
-                    </DialogDescription>
+                    <DialogDescription> Send an invitation to join this team. </DialogDescription>
                 </DialogHeader>
 
                 <div class="grid gap-4">
@@ -81,20 +74,12 @@ function handleOpenChange(value: boolean) {
 
                     <div class="grid gap-2">
                         <Label for="role">Role</Label>
-                        <Select
-                            v-model="inviteRole"
-                            name="role"
-                            data-test="invite-role"
-                        >
+                        <Select v-model="inviteRole" name="role" data-test="invite-role">
                             <SelectTrigger class="w-full">
                                 <SelectValue placeholder="Select a role" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem
-                                    v-for="role in props.availableRoles"
-                                    :key="role.value"
-                                    :value="role.value"
-                                >
+                                <SelectItem v-for="role in props.availableRoles" :key="role.value" :value="role.value">
                                     {{ role.label }}
                                 </SelectItem>
                             </SelectContent>
@@ -108,13 +93,7 @@ function handleOpenChange(value: boolean) {
                         <Button variant="secondary"> Cancel </Button>
                     </DialogClose>
 
-                    <Button
-                        type="submit"
-                        data-test="invite-submit"
-                        :disabled="processing"
-                    >
-                        Send invitation
-                    </Button>
+                    <Button type="submit" data-test="invite-submit" :disabled="processing"> Send invitation </Button>
                 </DialogFooter>
             </Form>
         </DialogContent>

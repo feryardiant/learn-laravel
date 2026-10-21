@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -10,33 +11,33 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog';
-import { leave as leaveTeamAction } from '@/routes/teams';
-import type { Team } from '@/types';
+} from '@/components/ui/dialog'
+import { leave as leaveTeamAction } from '@/routes/teams'
+import type { Team } from '@/types'
 
 type Props = {
-    team: Team | null;
-    open: boolean;
-};
+    team: Team | null
+    open: boolean
+}
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-    'update:open': [value: boolean];
-}>();
+    'update:open': [value: boolean]
+}>()
 
-const processing = ref(false);
+const processing = ref(false)
 
 const leaveTeam = () => {
     if (!props.team) {
-        return;
+        return
     }
 
     router.visit(leaveTeamAction(props.team.slug), {
         onStart: () => (processing.value = true),
         onFinish: () => (processing.value = false),
         onSuccess: () => emit('update:open', false),
-    });
-};
+    })
+}
 </script>
 
 <template>
@@ -56,12 +57,7 @@ const leaveTeam = () => {
                     <Button variant="secondary"> Cancel </Button>
                 </DialogClose>
 
-                <Button
-                    data-test="leave-team-confirm"
-                    variant="destructive"
-                    :disabled="processing"
-                    @click="leaveTeam"
-                >
+                <Button data-test="leave-team-confirm" variant="destructive" :disabled="processing" @click="leaveTeam">
                     Leave team
                 </Button>
             </DialogFooter>

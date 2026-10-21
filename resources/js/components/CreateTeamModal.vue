@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Form } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import InputError from '@/components/InputError.vue';
-import { Button } from '@/components/ui/button';
+import { Form } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import InputError from '@/components/InputError.vue'
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -12,19 +13,19 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { store } from '@/routes/teams';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { store } from '@/routes/teams'
 
-const open = ref(false);
-const formKey = ref(0);
+const open = ref(false)
+const formKey = ref(0)
 
 function handleOpenChange(value: boolean) {
-    open.value = value;
+    open.value = value
 
     if (!value) {
-        formKey.value++;
+        formKey.value++
     }
 }
 </script>
@@ -44,20 +45,12 @@ function handleOpenChange(value: boolean) {
             >
                 <DialogHeader>
                     <DialogTitle>Create a new team</DialogTitle>
-                    <DialogDescription>
-                        Create a new team to collaborate with others.
-                    </DialogDescription>
+                    <DialogDescription> Create a new team to collaborate with others. </DialogDescription>
                 </DialogHeader>
 
                 <div class="grid gap-2">
                     <Label for="name">Team name</Label>
-                    <Input
-                        id="name"
-                        name="name"
-                        data-test="create-team-name"
-                        placeholder="My team"
-                        required
-                    />
+                    <Input id="name" name="name" data-test="create-team-name" placeholder="My team" required />
                     <InputError :message="errors.name" />
                 </div>
 
@@ -66,13 +59,7 @@ function handleOpenChange(value: boolean) {
                         <Button variant="secondary"> Cancel </Button>
                     </DialogClose>
 
-                    <Button
-                        type="submit"
-                        data-test="create-team-submit"
-                        :disabled="processing"
-                    >
-                        Create team
-                    </Button>
+                    <Button type="submit" data-test="create-team-submit" :disabled="processing"> Create team </Button>
                 </DialogFooter>
             </Form>
         </DialogContent>

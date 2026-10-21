@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { Info } from '@lucide/vue';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import type { TeamInvitationContext } from '@/types';
+import { Info } from '@lucide/vue'
+
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import type { TeamInvitationContext } from '@/types'
 
 type Props = {
-    invitation: TeamInvitationContext;
-    action: 'Log in' | 'Register';
-};
+    invitation: TeamInvitationContext
+    action: 'Log in' | 'Register'
+}
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>

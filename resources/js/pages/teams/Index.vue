@@ -1,36 +1,32 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { Eye, LogOut, Pencil, Plus } from '@lucide/vue';
-import { ref } from 'vue';
-import CreateTeamModal from '@/components/CreateTeamModal.vue';
-import Heading from '@/components/Heading.vue';
-import LeaveTeamModal from '@/components/LeaveTeamModal.vue';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { edit, index } from '@/routes/teams';
-import type { Team } from '@/types';
+import { Head, Link } from '@inertiajs/vue3'
+import { Eye, LogOut, Pencil, Plus } from '@lucide/vue'
+import { ref } from 'vue'
+
+import CreateTeamModal from '@/components/CreateTeamModal.vue'
+import Heading from '@/components/Heading.vue'
+import LeaveTeamModal from '@/components/LeaveTeamModal.vue'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { edit, index } from '@/routes/teams'
+import type { Team } from '@/types'
 
 type Props = {
-    teams: Team[];
-};
+    teams: Team[]
+}
 
-defineProps<Props>();
+defineProps<Props>()
 
-const leaveTeamDialogOpen = ref(false);
-const teamLeaving = ref<Team | null>(null);
+const leaveTeamDialogOpen = ref(false)
+const teamLeaving = ref<Team | null>(null)
 
-const canLeaveTeam = (team: Team) => !team.isPersonal && team.role !== 'owner';
+const canLeaveTeam = (team: Team) => !team.isPersonal && team.role !== 'owner'
 
 const openLeaveTeamDialog = (team: Team) => {
-    teamLeaving.value = team;
-    leaveTeamDialogOpen.value = true;
-};
+    teamLeaving.value = team
+    leaveTeamDialogOpen.value = true
+}
 
 defineOptions({
     layout: {
@@ -41,7 +37,7 @@ defineOptions({
             },
         ],
     },
-});
+})
 </script>
 
 <template>
@@ -51,16 +47,10 @@ defineOptions({
 
     <div class="flex flex-col space-y-6">
         <div class="flex items-center justify-between">
-            <Heading
-                variant="small"
-                title="Teams"
-                description="Manage your teams and team memberships"
-            />
+            <Heading variant="small" title="Teams" description="Manage your teams and team memberships" />
 
             <CreateTeamModal>
-                <Button data-test="teams-new-team-button">
-                    <Plus /> New team
-                </Button>
+                <Button data-test="teams-new-team-button"> <Plus /> New team </Button>
             </CreateTeamModal>
         </div>
 
@@ -75,9 +65,7 @@ defineOptions({
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="font-medium">{{ team.name }}</span>
-                            <Badge v-if="team.isPersonal" variant="secondary">
-                                Personal
-                            </Badge>
+                            <Badge v-if="team.isPersonal" variant="secondary"> Personal </Badge>
                         </div>
                         <span class="text-sm text-muted-foreground">
                             {{ team.roleLabel }}
@@ -105,12 +93,7 @@ defineOptions({
 
                         <Tooltip v-if="team.role === 'member'">
                             <TooltipTrigger as-child>
-                                <Button
-                                    data-test="team-view-button"
-                                    variant="ghost"
-                                    size="sm"
-                                    as-child
-                                >
+                                <Button data-test="team-view-button" variant="ghost" size="sm" as-child>
                                     <Link :href="edit(team.slug)">
                                         <Eye class="h-4 w-4" />
                                     </Link>
@@ -123,12 +106,7 @@ defineOptions({
 
                         <Tooltip v-else>
                             <TooltipTrigger as-child>
-                                <Button
-                                    data-test="team-edit-button"
-                                    variant="ghost"
-                                    size="sm"
-                                    as-child
-                                >
+                                <Button data-test="team-edit-button" variant="ghost" size="sm" as-child>
                                     <Link :href="edit(team.slug)">
                                         <Pencil class="h-4 w-4" />
                                     </Link>
@@ -142,10 +120,7 @@ defineOptions({
                 </TooltipProvider>
             </div>
 
-            <p
-                v-if="teams.length === 0"
-                class="py-8 text-center text-muted-foreground"
-            >
+            <p v-if="teams.length === 0" class="py-8 text-center text-muted-foreground">
                 You don't belong to any teams yet.
             </p>
         </div>

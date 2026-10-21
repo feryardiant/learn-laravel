@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import { Button } from '@/components/ui/button';
+import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import { Button } from '@/components/ui/button'
 import {
     Dialog,
     DialogClose,
@@ -10,34 +11,34 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog';
-import { destroy as destroyInvitation } from '@/routes/teams/invitations';
-import type { Team, TeamInvitation } from '@/types';
+} from '@/components/ui/dialog'
+import { destroy as destroyInvitation } from '@/routes/teams/invitations'
+import type { Team, TeamInvitation } from '@/types'
 
 type Props = {
-    team: Team;
-    invitation: TeamInvitation | null;
-    open: boolean;
-};
+    team: Team
+    invitation: TeamInvitation | null
+    open: boolean
+}
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 const emit = defineEmits<{
-    'update:open': [value: boolean];
-}>();
+    'update:open': [value: boolean]
+}>()
 
-const processing = ref(false);
+const processing = ref(false)
 
 const cancelInvitation = () => {
     if (!props.invitation) {
-        return;
+        return
     }
 
     router.visit(destroyInvitation([props.team.slug, props.invitation.code]), {
         onStart: () => (processing.value = true),
         onFinish: () => (processing.value = false),
         onSuccess: () => emit('update:open', false),
-    });
-};
+    })
+}
 </script>
 
 <template>

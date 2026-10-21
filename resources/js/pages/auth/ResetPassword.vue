@@ -1,28 +1,29 @@
 <script setup lang="ts">
-import { Form, Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import InputError from '@/components/InputError.vue';
-import PasswordInput from '@/components/PasswordInput.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
-import { update } from '@/routes/password';
+import { Form, Head } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import InputError from '@/components/InputError.vue'
+import PasswordInput from '@/components/PasswordInput.vue'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
+import { update } from '@/routes/password'
 
 defineOptions({
     layout: {
         title: 'Reset password',
         description: 'Please enter your new password below',
     },
-});
+})
 
 const props = defineProps<{
-    token: string;
-    email: string;
-    passwordRules: string;
-}>();
+    token: string
+    email: string
+    passwordRules: string
+}>()
 
-const inputEmail = ref(props.email);
+const inputEmail = ref(props.email)
 </script>
 
 <template>
@@ -76,12 +77,7 @@ const inputEmail = ref(props.email);
                 <InputError :message="errors.password_confirmation" />
             </div>
 
-            <Button
-                type="submit"
-                class="mt-4 w-full"
-                :disabled="processing"
-                data-test="reset-password-button"
-            >
+            <Button type="submit" class="mt-4 w-full" :disabled="processing" data-test="reset-password-button">
                 <Spinner v-if="processing" />
                 Reset password
             </Button>

@@ -1,32 +1,27 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
-import { ref } from 'vue';
-import TeamInvitationController from '@/actions/App/Http/Controllers/Teams/TeamInvitationController';
-import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import type { DashboardInvitation } from '@/types';
+import { router } from '@inertiajs/vue3'
+import { ref } from 'vue'
+
+import TeamInvitationController from '@/actions/App/Http/Controllers/Teams/TeamInvitationController'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import type { DashboardInvitation } from '@/types'
 
 type Props = {
-    invitations: DashboardInvitation[];
-};
+    invitations: DashboardInvitation[]
+}
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const open = ref(true);
-const processingCode = ref<string | null>(null);
+const open = ref(true)
+const processingCode = ref<string | null>(null)
 
 const acceptInvitation = (invitation: DashboardInvitation) => {
     router.visit(TeamInvitationController.accept(invitation), {
         onStart: () => (processingCode.value = invitation.code),
         onFinish: () => (processingCode.value = null),
-    });
-};
+    })
+}
 
 const declineInvitation = (invitation: DashboardInvitation) => {
     router.visit(TeamInvitationController.decline(invitation), {
@@ -34,11 +29,11 @@ const declineInvitation = (invitation: DashboardInvitation) => {
         onFinish: () => (processingCode.value = null),
         onSuccess: () => {
             if (props.invitations.length === 1) {
-                open.value = false;
+                open.value = false
             }
         },
-    });
-};
+    })
+}
 </script>
 
 <template>
@@ -46,9 +41,7 @@ const declineInvitation = (invitation: DashboardInvitation) => {
         <DialogContent data-test="pending-invitations-modal">
             <DialogHeader>
                 <DialogTitle>Pending team invitations</DialogTitle>
-                <DialogDescription>
-                    Accept or decline the teams you have been invited to join.
-                </DialogDescription>
+                <DialogDescription> Accept or decline the teams you have been invited to join. </DialogDescription>
             </DialogHeader>
 
             <div class="grid gap-4">
@@ -61,8 +54,7 @@ const declineInvitation = (invitation: DashboardInvitation) => {
                     <div class="space-y-1">
                         <p class="font-medium">{{ invitation.team.name }}</p>
                         <p class="text-sm text-muted-foreground">
-                            {{ invitation.inviterName }} invited you to join
-                            this team.
+                            {{ invitation.inviterName }} invited you to join this team.
                         </p>
                     </div>
 
