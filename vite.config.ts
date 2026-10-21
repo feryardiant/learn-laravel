@@ -15,7 +15,13 @@ export default defineConfig({
         sortImports: true,
         singleAttributePerLine: false,
         htmlWhitespaceSensitivity: 'css',
-        ignorePatterns: ['composer.json', 'resources/views/mail/*', 'tests/coverage/**'],
+        ignorePatterns: [
+            'composer.json',
+            'AGENTS.md',
+            '.agents/**/*.md',
+            'resources/views/mail/*',
+            'tests/coverage/**',
+        ],
         sortTailwindcss: { stylesheet: 'resources/css/app.css' },
     },
     lint: {
