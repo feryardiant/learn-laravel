@@ -6,7 +6,7 @@ import { defineConfig, lazyPlugins } from 'vite-plus'
 export default defineConfig({
     staged: {
         '*.{md,json,js,ts,yaml,yml}': 'vp check --fix',
-        '{app,config,database,routers,tests}/**/*.php': 'php vendor/bin/pint --parallel',
+        '{app,config,database,routes,tests}/**/*.php': 'php vendor/bin/pint --parallel',
     },
     fmt: {
         printWidth: 120,
