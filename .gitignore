@@ -1,27 +1,58 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/fonts-manifest.dev.json
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-_ide_helper.php
-Homestead.json
-Homestead.yaml
+# Generic
+# --------------------------
 Thumbs.db
+Desktop.ini
+.DS_Store
+.directory
+._*
+*.DS_Store
+*.log
+*.key
+*.pem
+*.old
+*.tmp
+
+# Caches
+*.cache
+*~
+
+# IDE Project Configurations
+# --------------------------
+.idea
+.project
+.settings
+_ide_helper.php
+*.sublime-*
+
+# Development
+# --------------------------
+.env
+.env.*
+node_modules
+public/build
+public/fonts-manifest.dev.json
+public/hot
+public/storage
+tests/coverage
+vendor
+
+# AI Agents
+.ai
+.claude
+.mcp.json
+CLAUDE.md
+
+# Package managers
+.npmrc
+.pnpm-store
+.vitest
+bun.lock
+bun.lockb
+pnpm-lock.yaml
+yarn.lock
+
+# But Keep these
+# --------------------------
+!.env.example
+!.env.*.example
+!.gitkeep
