@@ -1,9 +1,9 @@
 ---
 name: fluxui-development
-description: "Use this skill for Flux UI development in Livewire applications only. Trigger when working with <flux:*> components, building or customizing Livewire component UIs, creating forms, modals, tables, or other interactive elements. Covers: flux: components (buttons, inputs, modals, forms, tables, date-pickers, kanban, badges, tooltips, etc.), component composition, Tailwind CSS styling, Heroicons/Lucide icon integration, validation patterns, responsive design, and theming. Do not use for non-Livewire frameworks or non-component styling."
+description: 'Use this skill for Flux UI development in Livewire applications only. Trigger when working with <flux:*> components, building or customizing Livewire component UIs, creating forms, modals, tables, or other interactive elements. Covers: flux: components (buttons, inputs, modals, forms, tables, date-pickers, kanban, badges, tooltips, etc.), component composition, Tailwind CSS styling, Heroicons/Lucide icon integration, validation patterns, responsive design, and theming. Do not use for non-Livewire frameworks or non-component styling.'
 license: MIT
 metadata:
-  author: laravel
+    author: laravel
 ---
 
 # Flux UI Development
@@ -21,6 +21,7 @@ Flux UI is a component library for Livewire built with Tailwind CSS. It provides
 Use Flux UI components when available. Fall back to standard Blade components when no Flux component exists for your needs.
 
 <!-- Basic Button -->
+
 ```blade
 <flux:button variant="primary">Click me</flux:button>
 ```
@@ -34,6 +35,7 @@ Available: avatar, badge, brand, breadcrumbs, button, callout, card, checkbox, d
 Flux includes [Heroicons](https://heroicons.com/) as its default icon set. Search for exact icon names on the Heroicons site - do not guess or invent icon names.
 
 <!-- Icon Button -->
+
 ```blade
 <flux:button icon="arrow-down-tray">Export</flux:button>
 ```
@@ -49,6 +51,7 @@ php artisan flux:icon crown grip-vertical github
 ### Form Fields
 
 <!-- Form Field -->
+
 ```blade
 <flux:field>
     <flux:label>Email</flux:label>
@@ -60,6 +63,7 @@ php artisan flux:icon crown grip-vertical github
 ### Modals
 
 <!-- Modal -->
+
 ```blade
 <flux:modal wire:model="showModal">
     <flux:heading>Title</flux:heading>
