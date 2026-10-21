@@ -59,7 +59,7 @@
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply ring-accent ring-offset-accent-foreground ring-2 ring-offset-2 outline-hidden;
+    @apply ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground outline-hidden;
 }
 
 /* \[:where(&)\]:size-4 {
