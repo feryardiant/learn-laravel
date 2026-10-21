@@ -46,6 +46,11 @@ export default defineConfig({
         tailwindcss(),
     ]),
     server: {
+        fs: {
+            // Due to this project' worktree lives inside `.git/` dir, so Vite's default
+            // `**/.git/**` deny blocks every project file. Keep the sensitive one denied.
+            deny: ['.env', '.env.*', '*.{crt,pem,key,p12,pfx,cer,der}', '.npmrc', '.yarnrc.yml', '**/.git/config'],
+        },
         watch: {
             ignored: ['**/.agents/**', '**/storage/framework/views/**', '**/tests/coverage/**', '**/vendor/**'],
         },
