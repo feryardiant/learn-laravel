@@ -1,12 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "feryardiant/learn-laravel",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "description": "Yet another learning laravel.",
+    "keywords": [],
     "license": "MIT",
     "require": {
         "php": "^8.3",
