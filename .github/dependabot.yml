@@ -5,6 +5,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    target-branch: kit/livewire
     groups:
       dependencies:
         patterns: ['*']
@@ -15,6 +16,7 @@ updates:
       interval: weekly
       timezone: Asia/Jakarta
     versioning-strategy: increase-if-necessary
+    target-branch: kit/livewire
     groups:
       dependencies:
         patterns: ['*']
@@ -25,6 +27,7 @@ updates:
       interval: weekly
       timezone: Asia/Jakarta
     versioning-strategy: increase-if-necessary
+    target-branch: kit/livewire
     groups:
       dependencies:
         patterns: ['*']
