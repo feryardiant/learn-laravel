@@ -6,7 +6,7 @@ import { defineConfig, lazyPlugins } from 'vite-plus'
 export default defineConfig({
     staged: {
         '*.{md,json,js,ts,yaml,yml}': 'vp check --fix',
-        '{app,config,database,routers,tests}/**/*.php': 'php vendor/bin/pint --parallel',
+        '{app,config,database,routes,tests}/**/*.php': 'php vendor/bin/pint --parallel',
     },
     fmt: {
         printWidth: 120,
@@ -16,7 +16,7 @@ export default defineConfig({
         singleAttributePerLine: false,
         htmlWhitespaceSensitivity: 'css',
         ignorePatterns: ['composer.json', 'resources/views/mail/*', 'tests/coverage/**'],
-        sortTailwindcss: { entryPoint: 'resources/css/app.css' },
+        sortTailwindcss: { stylesheet: 'resources/css/app.css' },
     },
     lint: {
         ignorePatterns: ['vendor/**', 'node_modules/**', 'public/**', 'tests/coverage/**'],
@@ -35,7 +35,7 @@ export default defineConfig({
     },
     plugins: lazyPlugins(() => [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/app.css', 'resources/js/app.ts'],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
