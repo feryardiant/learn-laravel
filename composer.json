@@ -1,12 +1,9 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/vue-starter-kit",
+    "name": "feryardiant/learn-laravel",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "description": "Yet another learning laravel.",
+    "keywords": [],
     "license": "MIT",
     "require": {
         "php": "^8.3",
