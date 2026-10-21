@@ -16,7 +16,7 @@ export default defineConfig({
         singleAttributePerLine: false,
         htmlWhitespaceSensitivity: 'css',
         ignorePatterns: ['composer.json', 'resources/views/mail/*', 'tests/coverage/**'],
-        sortTailwindcss: { entryPoint: 'resources/css/app.css' },
+        sortTailwindcss: { stylesheet: 'resources/css/app.css' },
     },
     lint: {
         ignorePatterns: ['vendor/**', 'node_modules/**', 'public/**', 'tests/coverage/**'],
