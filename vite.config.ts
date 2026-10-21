@@ -35,7 +35,7 @@ export default defineConfig({
     },
     plugins: lazyPlugins(() => [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/passkeys.js'],
+            input: ['resources/css/app.css', 'resources/js/app.ts', 'resources/js/passkeys.ts'],
             refresh: true,
             fonts: [
                 bunny('Instrument Sans', {
