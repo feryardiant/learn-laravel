@@ -17,11 +17,14 @@
 .zed               export-ignore
 AGENTS.md          export-ignore
 boost.json         export-ignore
+jsconfig.json      export-ignore
+mise.toml          export-ignore
 opencode.json      export-ignore
 package-lock.json  export-ignore
 pint.json          export-ignore
 phpstan.neon       export-ignore
 phpunit.xml        export-ignore
 tests              export-ignore
+tsconfig.json      export-ignore
 *.config.js        export-ignore
 *.config.ts        export-ignore
