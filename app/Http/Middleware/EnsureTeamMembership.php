@@ -61,7 +61,7 @@ class EnsureTeamMembership
     {
         $team = $request->route('current_team') ?? $request->route('team');
 
-        if (is_string($team)) {
+        if (\is_string($team)) {
             $team = Team::where('slug', $team)->first();
         }
 

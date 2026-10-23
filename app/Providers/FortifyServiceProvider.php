@@ -125,7 +125,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $invitationCode = $request->query('invitation');
 
-        if (! is_string($invitationCode)) {
+        if (! \is_string($invitationCode)) {
             return null;
         }
 
