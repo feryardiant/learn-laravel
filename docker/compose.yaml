@@ -1,0 +1,75 @@
+x-healthcheck: &healthcheck
+  interval: 10s
+  timeout: 5s
+  retries: 3
+
+x-deploy: &deploy
+  resources:
+    limits:
+      cpus: '0.5'
+      memory: 512M
+
+services:
+  app:
+    image: ghcr.io/feryardiant/learn-laravel:latest
+    container_name: learn-laravel-app
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    env_file: ../.env
+    environment:
+      AUTORUN_LARAVEL_MIGRATION: false
+      AUTORUN_LARAVEL_MIGRATION_SEED: false
+      LARAVEL_SAIL: 1
+      TZ: Asia/Jakarta
+    healthcheck:
+      test: [CMD-SHELL, 'curl -ksLfS http://localhost:8080$$HEALTHCHECK_PATH']
+      <<: *healthcheck
+    deploy: *deploy
+
+  worker:
+    image: ghcr.io/feryardiant/learn-laravel:latest
+    pull_policy: build
+    depends_on:
+      app:
+        condition: service_healthy
+    env_file: ../.env
+    environment:
+      AUTORUN_ENABLED: false
+      LARAVEL_SAIL: 1
+      TZ: Asia/Jakarta
+    stop_signal: SIGTERM
+    healthcheck:
+      <<: *healthcheck
+    deploy: *deploy
+
+  pgsql:
+    image: postgres:${DB_VERSION:-17.7}-${BASE_OS:-alpine}${BASE_VERSION:-3.23}
+    container_name: learn-laravel-db
+    ports:
+      - ${FORWARD_DB_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-laravel}
+      POSTGRES_USER: ${DB_USERNAME:-laravel}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      TZ: Asia/Jakarta
+    volumes:
+      - ./volumes/pgsql:/var/lib/postgresql/data
+      - ./init-database.sql:/docker-entrypoint-initdb.d/10-init-database.sql
+    healthcheck:
+      test: [CMD, pg_isready, -q, -d, '${DB_DATABASE:-learn-laravel}', -U, '${DB_USERNAME:-learn-laravel}']
+      <<: *healthcheck
+    deploy: *deploy
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    container_name: learn-laravel-mail
+    ports:
+      - ${FORWARD_MAILPIT_APP_PORT:-8025}:8025
+      - ${FORWARD_MAILPIT_MAIL_PORT:-1025}:1025
+    environment:
+      TZ: Asia/Jakarta
+    volumes:
+      - ./volumes/mailpit:/data
