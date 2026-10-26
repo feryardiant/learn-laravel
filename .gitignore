@@ -10,25 +10,24 @@ Desktop.ini
 *.key
 *.pem
 *.old
+
+# Backup, Cache and Temporary
+.cache
+*~
+*.bak*
+*.cache
+*.swp
 *.tmp
 
-# Caches
-*.cache
-*~
-
-# IDE Project Configurations
-# --------------------------
-.idea
-.project
-.settings
-_ide_helper.php
-*.sublime-*
+# Distribution
+*.gz
+*.zip
+dist
 
 # Development
 # --------------------------
-.env
 .env.*
-node_modules
+.env
 public/build
 public/css/filament
 public/fonts/filament
@@ -37,7 +36,6 @@ public/js/filament
 public/hot
 public/storage
 tests/coverage
-vendor
 
 # AI Agents
 .ai
@@ -45,14 +43,22 @@ vendor
 .mcp.json
 CLAUDE.md
 
+# IDE configs
+.idea
+.project
+.settings
+_ide_helper.php
+*.sublime-*
+
 # Package managers
 .npmrc
 .pnpm-store
 .vitest
-bun.lock
-bun.lockb
+bun.lock*
+node_modules
 pnpm-lock.yaml
 yarn.lock
+vendor
 
 # But Keep these
 # --------------------------
