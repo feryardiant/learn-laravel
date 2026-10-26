@@ -10,7 +10,6 @@ services:
         PHP_VERSION: ${PHP_VERSION:-8.5}
         BASE_OS: ${BASE_OS:-alpine}
         BASE_VERSION: ${BASE_VERSION:-3.23}
-    image: ghcr.io/feryardiant/learn-laravel:staging
     environment:
       AUTORUN_LARAVEL_MIGRATION: true
       AUTORUN_LARAVEL_MIGRATION_SEED: true

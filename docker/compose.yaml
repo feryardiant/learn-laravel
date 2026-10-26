@@ -11,7 +11,7 @@ x-deploy: &deploy
 
 services:
   app:
-    image: ghcr.io/feryardiant/learn-laravel:latest
+    image: ghcr.io/feryardiant/learn-laravel:staging
     container_name: learn-laravel-app
     depends_on:
       pgsql:
@@ -30,7 +30,7 @@ services:
     deploy: *deploy
 
   worker:
-    image: ghcr.io/feryardiant/learn-laravel:latest
+    image: ghcr.io/feryardiant/learn-laravel:staging
     pull_policy: build
     depends_on:
       app:
