@@ -75,7 +75,11 @@ return [
     |
     */
 
-    'connection' => env('SESSION_CONNECTION'),
+    'connection' => env('SESSION_CONNECTION', function () {
+        return env('SESSION_DRIVER', 'database') === 'database'
+            ? env('DB_SYSTEM_CONNECTION', 'system')
+            : null;
+    }),
 
     /*
     |--------------------------------------------------------------------------
