@@ -1,0 +1,51 @@
+services:
+  app:
+    extends:
+      file: docker/compose.yaml
+      service: app
+    build:
+      context: .
+      dockerfile: docker/staging/Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.5}
+        BASE_OS: ${BASE_OS:-alpine}
+        BASE_VERSION: ${BASE_VERSION:-3.23}
+    image: ghcr.io/feryardiant/learn-laravel:staging
+    environment:
+      AUTORUN_LARAVEL_MIGRATION: true
+      AUTORUN_LARAVEL_MIGRATION_SEED: true
+    ports:
+      - ${APP_PORT:-8080}:8080
+
+  scheduler:
+    extends:
+      file: docker/compose.yaml
+      service: worker
+    container_name: learn-laravel-scheduler
+    command: [php, /var/www/html/artisan, schedule:work]
+    healthcheck:
+      test: [CMD, healthcheck-schedule]
+
+  queue:
+    extends:
+      file: docker/compose.yaml
+      service: worker
+    container_name: learn-laravel-queue
+    command: [php, /var/www/html/artisan, queue:work, --tries=3]
+    healthcheck:
+      test: [CMD, healthcheck-queue]
+
+  pgsql:
+    extends:
+      file: docker/compose.yaml
+      service: pgsql
+
+  mailpit:
+    extends:
+      file: docker/compose.yaml
+      service: mailpit
+
+networks:
+  default:
+    name: learn-laravel-staging
+    enable_ipv6: false
