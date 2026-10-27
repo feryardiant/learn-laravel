@@ -84,18 +84,8 @@ function configureServer(appUrl: URL): UserConfig['server'] {
         return server
     }
 
-    console.log(appUrl.hostname)
-    // The proxy forwards `Host: $host`, and the plugin only handles CORS (not
-    // Vite's host check), so the app's hostname must be allowed explicitly or
-    // Vite answers every proxied request with 403.
-    server.allowedHosts = [appUrl.hostname]
-    server.cors = { origin: appUrl.origin }
-    // This must be the full origin (`https://host`): it is written verbatim
-    // into `public/hot`, which `Vite::asset()` turns into asset URLs.
-    server.origin = appUrl.origin
-    // Proxy the HMR websocket on its own path so it does not collide with the
-    // application's routes (see docker/development/nginx/vite.conf).
-    server.ws = { path: '/vite-hmr' }
+    // Allow vite to receive request from non `localhost`, e.g using orbstack subdomains,
+    server.cors = { origin: ['http://localhost', appUrl.origin] }
 
     return server
 }
