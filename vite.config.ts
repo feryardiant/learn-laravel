@@ -12,34 +12,6 @@ export default defineConfig(({ mode }): UserConfig => {
     // In Docker, APP_URL comes from the container environment (see .env), so the
     // dev assets can be served from the same origin the browser is already using.
     const appUrl = new URL(env.APP_URL || 'http://localhost')
-    const server: UserConfig['server'] = {
-        watch: {
-            ignored: ['**/.agents/**', '**/docker/**', '**/storage/**', '**/tests/**', '**/vendor/**'],
-        },
-    }
-
-    if (import.meta.url.includes('.git')) {
-        server.fs = {
-            // Due to this project' worktree lives inside `.git/` dir, so Vite's default
-            // `**/.git/**` deny blocks every project file. Keep the sensitive one denied.
-            deny: ['.env', '.env.*', '*.{crt,pem,key,p12,pfx,cer,der}', '.npmrc', '.yarnrc.yml', '**/.git/config'],
-        }
-    }
-
-    if (appUrl.hostname !== 'localhost') {
-        console.log(appUrl.hostname)
-        // The proxy forwards `Host: $host`, and the plugin only handles CORS (not
-        // Vite's host check), so the app's hostname must be allowed explicitly or
-        // Vite answers every proxied request with 403.
-        server.allowedHosts = [appUrl.hostname]
-        server.cors = { origin: appUrl.origin }
-        // This must be the full origin (`https://host`): it is written verbatim
-        // into `public/hot`, which `Vite::asset()` turns into asset URLs.
-        server.origin = appUrl.origin
-        // Proxy the HMR websocket on its own path so it does not collide with the
-        // application's routes (see docker/development/nginx/vite.conf).
-        server.ws = { path: '/vite-hmr' }
-    }
 
     return {
         staged: {
@@ -89,6 +61,41 @@ export default defineConfig(({ mode }): UserConfig => {
             }),
             tailwindcss(),
         ]),
-        server,
+        server: configureServer(appUrl),
     }
 })
+
+function configureServer(appUrl: URL): UserConfig['server'] {
+    const server: UserConfig['server'] = {
+        watch: {
+            ignored: ['**/.agents/**', '**/docker/**', '**/storage/**', '**/tests/**', '**/vendor/**'],
+        },
+    }
+
+    if (import.meta.url.includes('.git')) {
+        server.fs = {
+            // Due to this project' worktree lives inside `.git/` dir, so Vite's default
+            // `**/.git/**` deny blocks every project file. Keep the sensitive one denied.
+            deny: ['.env', '.env.*', '*.{crt,pem,key,p12,pfx,cer,der}', '.npmrc', '.yarnrc.yml', '**/.git/config'],
+        }
+    }
+
+    if (appUrl.hostname === 'localhost') {
+        return server
+    }
+
+    console.log(appUrl.hostname)
+    // The proxy forwards `Host: $host`, and the plugin only handles CORS (not
+    // Vite's host check), so the app's hostname must be allowed explicitly or
+    // Vite answers every proxied request with 403.
+    server.allowedHosts = [appUrl.hostname]
+    server.cors = { origin: appUrl.origin }
+    // This must be the full origin (`https://host`): it is written verbatim
+    // into `public/hot`, which `Vite::asset()` turns into asset URLs.
+    server.origin = appUrl.origin
+    // Proxy the HMR websocket on its own path so it does not collide with the
+    // application's routes (see docker/development/nginx/vite.conf).
+    server.ws = { path: '/vite-hmr' }
+
+    return server
+}
