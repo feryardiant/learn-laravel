@@ -9,17 +9,27 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
+     * {@inheritdoc}
+     */
+    public function shouldRun(): bool
+    {
+        return config('cache.default') === 'database';
+    }
+
+    /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('cache', function (Blueprint $table) {
+        $cache = config('cache.stores.database');
+
+        Schema::connection($cache['connection'])->create($cache['table'], function (Blueprint $table) {
             $table->string('key')->primary();
             $table->mediumText('value');
             $table->bigInteger('expiration')->index();
         });
 
-        Schema::create('cache_locks', function (Blueprint $table) {
+        Schema::connection($cache['lock_connection'])->create($cache['lock_table'], function (Blueprint $table) {
             $table->string('key')->primary();
             $table->string('owner');
             $table->bigInteger('expiration')->index();
@@ -31,7 +41,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cache');
-        Schema::dropIfExists('cache_locks');
+        $cache = config('cache.stores.database');
+
+        Schema::connection($cache['connection'])->dropIfExists($cache['table']);
+        Schema::connection($cache['lock_connection'])->dropIfExists($cache['lock_table']);
     }
 };
