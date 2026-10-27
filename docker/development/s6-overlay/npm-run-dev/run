@@ -3,4 +3,4 @@
 # Use with-contenv to ensure environment variables are available
 with-contenv
 cd /var/www/html
-npm run dev -- --host 127.0.0.1
+npm run dev -- --host 0.0.0.0
