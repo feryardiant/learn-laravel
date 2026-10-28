@@ -18,20 +18,21 @@
         "laravel-vite-plugin": "^3.2.0",
         "tailwindcss": "^4.3.3",
         "typescript": "^7.0.2",
-        "vite": "npm:@voidzero-dev/vite-plus-core@^1.3.0",
-        "vite-plus": "1.3.0"
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
+        "vite-plus": "1.4.0"
     },
     "optionalDependencies": {
         "@laravel/multiplex": "^0.4.5"
     },
     "overrides": {
-        "vite": "npm:@voidzero-dev/vite-plus-core@^1.3.0"
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0"
     },
     "commitlint": {
         "extends": [
             "@commitlint/config-conventional"
         ]
     },
+    "packageManager": "npm@12.2.1",
     "allowScripts": {
         "fsevents": false
     }
