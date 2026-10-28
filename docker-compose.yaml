@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: docker/development/Dockerfile
       args:
-        PHP_VERSION: ${PHP_VERSION:-8.5}
+        PHP_VERSION: ${PHP_VERSION:-8.4}
         BASE_OS: ${BASE_OS:-alpine}
-        BASE_VERSION: ${BASE_VERSION:-3.23}
+        BASE_VERSION: ${BASE_VERSION:-3.24}
     image: ghcr.io/feryardiant/learn-laravel:local
     pull_policy: never
     ports:

@@ -1,7 +1,7 @@
 # Add user/group
-ARG PHP_VERSION=8.5
+ARG PHP_VERSION=8.4
 ARG BASE_OS=alpine
-ARG BASE_VERSION=3.23
+ARG BASE_VERSION=3.24
 
 ############################################
 # Base Image
