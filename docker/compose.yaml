@@ -46,7 +46,7 @@ services:
     deploy: *deploy
 
   pgsql:
-    image: postgres:${DB_VERSION:-17.7}-${BASE_OS:-alpine}${BASE_VERSION:-3.23}
+    image: postgres:${DB_VERSION:-18.6}-${BASE_OS:-alpine}${BASE_VERSION:-3.24}
     container_name: learn-laravel-db
     ports:
       - ${FORWARD_DB_PORT:-5432}:5432
@@ -56,10 +56,10 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
       TZ: Asia/Jakarta
     volumes:
-      - ./volumes/pgsql:/var/lib/postgresql/data
+      - ./volumes/pgsql:/var/lib/postgresql/18/docker
       - ./init-database.sql:/docker-entrypoint-initdb.d/10-init-database.sql
     healthcheck:
-      test: [CMD, pg_isready, -q, -d, '${DB_DATABASE:-learn-laravel}', -U, '${DB_USERNAME:-learn-laravel}']
+      test: [CMD, pg_isready, -q, '-d${DB_DATABASE:-laravel}', '-U${DB_USERNAME:-laravel}']
       <<: *healthcheck
     deploy: *deploy
 
