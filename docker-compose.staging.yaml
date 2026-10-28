@@ -7,9 +7,9 @@ services:
       context: .
       dockerfile: docker/staging/Dockerfile
       args:
-        PHP_VERSION: ${PHP_VERSION:-8.5}
+        PHP_VERSION: ${PHP_VERSION:-8.4}
         BASE_OS: ${BASE_OS:-alpine}
-        BASE_VERSION: ${BASE_VERSION:-3.23}
+        BASE_VERSION: ${BASE_VERSION:-3.24}
     environment:
       AUTORUN_LARAVEL_MIGRATION: true
       AUTORUN_LARAVEL_MIGRATION_SEED: true
@@ -21,7 +21,7 @@ services:
       file: docker/compose.yaml
       service: worker
     container_name: learn-laravel-scheduler
-    command: [php, /var/www/html/artisan, schedule:work]
+    command: [./artisan, schedule:work, --whisper]
     healthcheck:
       test: [CMD, healthcheck-schedule]
 
@@ -30,7 +30,7 @@ services:
       file: docker/compose.yaml
       service: worker
     container_name: learn-laravel-queue
-    command: [php, /var/www/html/artisan, queue:work, --tries=3]
+    command: [./artisan, queue:work, --tries=3, --sleep=3, --timeout=0]
     healthcheck:
       test: [CMD, healthcheck-queue]
 

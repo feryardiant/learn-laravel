@@ -3,4 +3,4 @@
 # Use with-contenv to ensure environment variables are available
 with-contenv
 cd /var/www/html
-php artisan queue:listen --tries=1 --timeout=0
+php artisan queue:work --tries=1 --sleep=3 --timeout=0
