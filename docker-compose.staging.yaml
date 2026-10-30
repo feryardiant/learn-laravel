@@ -6,22 +6,28 @@ services:
     build:
       context: .
       dockerfile: docker/staging/Dockerfile
-      args:
-        PHP_VERSION: ${PHP_VERSION:-8.4}
-        BASE_OS: ${BASE_OS:-alpine}
-        BASE_VERSION: ${BASE_VERSION:-3.24}
-    environment:
-      AUTORUN_LARAVEL_MIGRATION: true
-      AUTORUN_LARAVEL_MIGRATION_SEED: true
+    image: ghcr.io/feryardiant/learn-laravel:staging
+    container_name: learn-laravel-app
+    environment: &environment
+      APP_DEBUG: false
+      APP_ENV: staging
+      LOG_LEVEL: info
+      DB_HOST: pgsql
+      MAIL_HOST: mailpit
     ports:
       - ${APP_PORT:-8080}:8080
+    volumes:
+      - ./storage/app:/var/www/html/storage/app
 
-  scheduler:
+  schedule:
     extends:
       file: docker/compose.yaml
       service: worker
-    container_name: learn-laravel-scheduler
     command: [./artisan, schedule:work, --whisper]
+    container_name: learn-laravel-schedule
+    environment: *environment
+    volumes:
+      - ./storage/app:/var/www/html/storage/app
     healthcheck:
       test: [CMD, healthcheck-schedule]
 
@@ -29,8 +35,11 @@ services:
     extends:
       file: docker/compose.yaml
       service: worker
+    command: [./artisan, queue:work, --tries=3, --sleep=3, --timeout=60]
     container_name: learn-laravel-queue
-    command: [./artisan, queue:work, --tries=3, --sleep=3, --timeout=0]
+    environment: *environment
+    volumes:
+      - ./storage/app:/var/www/html/storage/app
     healthcheck:
       test: [CMD, healthcheck-queue]
 
@@ -38,13 +47,24 @@ services:
     extends:
       file: docker/compose.yaml
       service: pgsql
+    ports:
+      - ${FORWARD_DB_PORT:-5432}:5432
 
   mailpit:
     extends:
       file: docker/compose.yaml
       service: mailpit
+    ports:
+      - ${FORWARD_MAILPIT_APP_PORT:-8025}:8025
+      - ${FORWARD_MAILPIT_MAIL_PORT:-1025}:1025
 
 networks:
   default:
     name: learn-laravel-staging
     enable_ipv6: false
+
+volumes:
+  mailpit-data:
+    driver: local
+  pgsql-data:
+    driver: local
