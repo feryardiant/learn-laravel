@@ -34,6 +34,7 @@ AGENTS.md
 boost.json
 docker-compose.yaml
 docker-compose.*.yaml
+mise.toml
 node_modules
 opencode.json
 phpstan.neon
@@ -50,9 +51,9 @@ vendor
 # 3. Ignore common files/directories we don't need
 .editorconfig
 .git
+.gitattributes
 .github
 .gitignore
-.gitattributes
 .idea
 .vscode
 .zed
@@ -64,5 +65,6 @@ vendor
 **/*.pem
 **/*.key
 **/.gitignore
+**/.gitkeep
 **/.DS_Store
 **/Thumbs.db

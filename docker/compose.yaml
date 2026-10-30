@@ -7,31 +7,39 @@ x-deploy: &deploy
   resources:
     limits:
       cpus: '0.5'
-      memory: 512M
+      memory: 256m
 
 services:
-  app:
-    image: ghcr.io/feryardiant/learn-laravel:staging
-    container_name: learn-laravel-app
+  app: &app
+    build:
+      args:
+        PHP_VERSION: ${PHP_VERSION:-8.4}
+        BASE_OS: ${BASE_OS:-alpine}
+        BASE_VERSION: ${BASE_VERSION:-3.24}
     depends_on:
       pgsql:
         condition: service_healthy
       mailpit:
         condition: service_started
+    pull_policy: build
     env_file: ../.env
     environment:
-      AUTORUN_LARAVEL_MIGRATION: false
-      AUTORUN_LARAVEL_MIGRATION_SEED: false
+      AUTORUN_LARAVEL_MIGRATION: true
+      AUTORUN_LARAVEL_MIGRATION_SEED: true
       LARAVEL_SAIL: 1
+      LOG_STACK: daily,stderr
       TZ: Asia/Jakarta
-    healthcheck:
-      test: [CMD-SHELL, 'curl -ksLfS http://localhost:8080$$HEALTHCHECK_PATH']
-      <<: *healthcheck
-    deploy: *deploy
+    labels:
+      dev.orbstack.http-port: 8080
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512m
 
   worker:
     image: ghcr.io/feryardiant/learn-laravel:staging
-    pull_policy: build
+    pull_policy: never
     depends_on:
       app:
         condition: service_healthy
@@ -41,6 +49,7 @@ services:
       LARAVEL_SAIL: 1
       TZ: Asia/Jakarta
     stop_signal: SIGTERM
+    stop_grace_period: 90s
     healthcheck:
       <<: *healthcheck
     deploy: *deploy
@@ -48,15 +57,13 @@ services:
   pgsql:
     image: postgres:${DB_VERSION:-18.6}-${BASE_OS:-alpine}${BASE_VERSION:-3.24}
     container_name: learn-laravel-db
-    ports:
-      - ${FORWARD_DB_PORT:-5432}:5432
     environment:
       POSTGRES_DB: ${DB_DATABASE:-laravel}
       POSTGRES_USER: ${DB_USERNAME:-laravel}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
       TZ: Asia/Jakarta
     volumes:
-      - ./volumes/pgsql:/var/lib/postgresql/18/docker
+      - pgsql-data:/var/lib/postgresql
       - ./init-database.sql:/docker-entrypoint-initdb.d/10-init-database.sql
     healthcheck:
       test: [CMD, pg_isready, -q, '-d${DB_DATABASE:-laravel}', '-U${DB_USERNAME:-laravel}']
@@ -66,10 +73,9 @@ services:
   mailpit:
     image: axllent/mailpit:v1.27
     container_name: learn-laravel-mail
-    ports:
-      - ${FORWARD_MAILPIT_APP_PORT:-8025}:8025
-      - ${FORWARD_MAILPIT_MAIL_PORT:-1025}:1025
     environment:
       TZ: Asia/Jakarta
     volumes:
-      - ./volumes/mailpit:/data
+      - mailpit-data:/data
+    labels:
+      dev.orbstack.http-port: 8025
